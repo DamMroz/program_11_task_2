@@ -53,9 +53,11 @@ class db:
 
 df = db()
 df.merge()
+df_initial=df.merge()
 
-def prepare_days():
-    df=db().merge()
+
+def prepare_days(df_initial):
+    df=df_initial
     df['day']=df['tran_date'].dt.weekday
     df.loc[df["day"] == 0, "day"] = "Monday"
     df.loc[df["day"] == 1, "day"] = "Tuesday"
@@ -75,8 +77,8 @@ def prepare_days():
     return df_days
 
 
-def prepare_customer():
-    df=db().merge()
+def prepare_customer(df_initial):
+    df=df_initial
     df_customer=df.copy()
     df_customer=df_customer.groupby(['Store_type','Gender']).size()
     df_customer=df_customer.to_frame()
@@ -89,8 +91,8 @@ def prepare_customer():
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 
-df_days=prepare_days()
-df_customer=prepare_customer()
+df_days=prepare_days(df_initial)
+df_customer=prepare_customer(df_initial)
 
 
 USERNAME_PASSWORD = [['user','pass']]
